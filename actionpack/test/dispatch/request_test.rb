@@ -834,6 +834,16 @@ class RequestFormat < BaseRequestTest
     assert_equal [Mime[:html]], request.formats
   end
 
+  test "formats application/json & application/xml with accept header" do
+    request = stub_request "HTTP_ACCEPT" => "application/json, application/xml"
+    assert_equal [Mime[:json], Mime[:xml]], request.formats
+  end
+
+  test "formats application/json & wildcard with accept header" do
+    request = stub_request "HTTP_ACCEPT" => "application/json, */*"
+    assert_equal [Mime[:json]], request.formats
+  end
+
   test "formats blank with accept header" do
     request = stub_request "HTTP_ACCEPT" => ""
     assert_equal [Mime[:html]], request.formats
